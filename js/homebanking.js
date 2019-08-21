@@ -18,18 +18,11 @@ window.onload = function() {
     actualizarLimiteEnPantalla();
 }
 
-function esValorValido(valor){
-  
-    if(valor != 0) 
-        return true; 
-    else
-        return false;
-}
 
 //Funciones que tenes que completar
 function cambiarLimiteDeExtraccion() {
     var nuevoLimite = +prompt('Ingrese nuevo límite de extracción: ');
-    
+   
     if(esValorValido(nuevoLimite)){
         limiteExtraccion = nuevoLimite;
         actualizarLimiteEnPantalla();
@@ -40,6 +33,15 @@ function cambiarLimiteDeExtraccion() {
     }
 }
 
+function esValorValido(valor){
+  
+    if(valor != 0 && typeof valor === "number") 
+        return true; 
+    else
+        return false;
+}
+
+
 function extraerDinero() {
     var saldoAnterior = saldoCuenta;
     var montoAExtraer = +prompt('Monto a Extraer');
@@ -48,7 +50,7 @@ function extraerDinero() {
         if(montoAExtraer <= saldoCuenta){
             if(montoAExtraer <= limiteExtraccion){
                 if(montoAExtraer % 100 == 0){
-                    saldoCuenta -= montoAExtraer;
+                    sumarDinero(-montoAExtraer);
                     actualizarSaldoEnPantalla();
                     alert('Has retirado: ' + montoAExtraer + '\nSaldo anterior: ' + saldoAnterior + '\nSaldo Actual: ' + saldoCuenta);
                 }
@@ -75,7 +77,7 @@ function depositarDinero() {
     var montoADepositar = +prompt('Monto a Depositar: ');
 
     if(esValorValido(montoADepositar)){
-        saldoCuenta += montoADepositar;
+        sumarDinero(montoADepositar);
         actualizarSaldoEnPantalla();
         alert('Has depositado: ' + montoADepositar + '\nSaldo anterior: ' + saldoAnterior + '\nSaldo Actual: ' + saldoCuenta);
     }    
@@ -84,9 +86,17 @@ function depositarDinero() {
     }
 }
 
+function sumarDinero(monto){
+    saldoCuenta += monto; 
+}
+
 function pagarServicio() {
     var opcion = +prompt('Ingrese el número que corresponda con el servicio que querés pagar' + '\n1- Agua' + '\n2- Luz' + '\n3- Internet' 
     + '\n4- Teléfono');
+
+    if(opcion == 0){
+        return;
+    }
 
     switch(opcion){
         case 1:
@@ -112,8 +122,8 @@ function pagarEsteServicio(idServicio, precioServicio){
 
     if(precioServicio <= saldoCuenta){
         var saldoAnterior = saldoCuenta; 
-        saldoCuenta -= precioServicio;
-        alert('Has pagado el servicio' + servicios[idServicio] + '\nSaldo anterior: ' + saldoAnterior + '\nDinero descontado: ' + 
+        sumarDinero(-precioServicio);
+        alert('Has pagado el servicio: ' + servicios[idServicio] + '\nSaldo anterior: ' + saldoAnterior + '\nDinero descontado: ' + 
         precioServicio + '\nSaldo Actual: ' + saldoCuenta);
         actualizarSaldoEnPantalla();
     }
@@ -129,7 +139,7 @@ function transferirDinero() {
         if(monto <= saldoCuenta){
             let cuenta = +prompt('Ingrese la cuenta a donde va a transferir');
             if(esCtaAmiga(cuenta)){
-                saldoCuenta -= monto;
+                sumarDinero(-monto);
                 actualizarSaldoEnPantalla();
                 alert('Se han transferido: ' + monto + '\nCuenta destino: ' + cuenta);
             }
@@ -167,15 +177,10 @@ function iniciarSesion() {
     }
     else{
         saldoCuenta = 0;
-        // document.getElementsByClassName("white-container").style.display = 'none';
-        // document.getElementsByTagName('button').style.display = 'none';
         alert('Código incorrecto. Tu dinero ha sido retenido por cuestiones de seguridad');
     }
 }
 
-// function ocultar(){
-//     document.getElementsByClassName("white-container").style.visibility = 'hidden';
-// }
 
 //Funciones que actualizan el valor de las variables en el HTML
 function cargarNombreEnPantalla() {
