@@ -35,10 +35,10 @@ function cambiarLimiteDeExtraccion() {
 
 function esValorValido(valor){
   
-    if(valor != 0 && typeof valor === "number") 
-        return true; 
+    if(valor == 0 || isNaN(valor)) 
+        return false; 
     else
-        return false;
+        return true;
 }
 
 
