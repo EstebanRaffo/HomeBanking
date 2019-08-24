@@ -47,8 +47,8 @@ function extraerDinero() {
     var montoAExtraer = +prompt('Monto a Extraer');
     
     if(esValorValido(montoAExtraer)){
-        if(montoAExtraer <= saldoCuenta){
-            if(montoAExtraer <= limiteExtraccion){
+        if(montoAExtraer <= limiteExtraccion){
+            if(montoAExtraer <= saldoCuenta){
                 if(montoAExtraer % 100 == 0){
                     sumarDinero(-montoAExtraer);
                     actualizarSaldoEnPantalla();
@@ -59,11 +59,11 @@ function extraerDinero() {
                 }
             }
             else{
-                alert('La cantidad de dinero que deseas extraer es mayor a tu límite de extracción');
+                alert('No hay saldo disponible en tu cuenta para extraer esa cantidad de dinero');
             }
         }
         else{
-            alert('No hay saldo disponible en tu cuenta para extraer esa cantidad de dinero');
+            alert('La cantidad de dinero que deseas extraer es mayor a tu límite de extracción');
         }
     }
     else{
@@ -178,6 +178,7 @@ function iniciarSesion() {
     else{
         saldoCuenta = 0;
         alert('Código incorrecto. Tu dinero ha sido retenido por cuestiones de seguridad');
+        actualizarSaldoEnPantalla();
     }
 }
 
