@@ -35,7 +35,7 @@ function cambiarLimiteDeExtraccion() {
 
 function esValorValido(valor){
   
-    if(valor == 0 || isNaN(valor)) 
+    if(valor <= 0 || isNaN(valor)) 
         return false; 
     else
         return true;
